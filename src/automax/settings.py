@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 
 from pathlib import Path
 import os
+from django.contrib.messages import constants as messages
 from dotenv import load_dotenv
 load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -105,8 +106,14 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+#login settings
 LOGIN_REDIRECT_URL = '/home/'
 LOGIN_URL = '/login/'
+
+#message settings
+MESSAGE_TAGS = {
+    messages.ERROR: 'danger'
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/6.1/topics/i18n/
