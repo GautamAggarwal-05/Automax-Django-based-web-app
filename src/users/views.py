@@ -2,7 +2,7 @@ from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from django.contrib.auth.forms import AuthenticationForm,UserCreationForm
 from django.contrib import messages
-from django.contrib.auth import authenticate,login
+from django.contrib.auth import authenticate,login,logout
 from django.views import View
 # Create your views here.
 
@@ -24,6 +24,12 @@ def login_view(request):
     elif request.method == 'GET':
         login_form = AuthenticationForm()
     return render(request, 'views/login.html', {'title': 'Login', 'login_form': login_form})
+
+def logout_view(request):
+    logout(request)
+    messages.success(request,f'You have been logged out')
+    return redirect('home')
+
 
 class RegisterView(View):
     def get(self,request):
