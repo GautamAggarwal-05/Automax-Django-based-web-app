@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'localflavor',
+    'crispy_forms',
+    'crispy_bootstrap4',
     'main',
     'users',
 ]
@@ -124,6 +126,10 @@ STATIC_URL = 'static/'
 # Media files (User uploaded content)
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+# Django Crispy Forms Settings
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
 # Email
 # https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
 
