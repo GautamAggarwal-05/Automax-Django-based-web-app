@@ -1,0 +1,11 @@
+{% extends 'base/base.html' %}
+
+{% load static %}
+{% block title %} AutoMax -Home{% endblock %}
+
+{% block body %}
+    <h1>Welcome to the Home Page</h1>
+    <p>This is the home page of the AutoMax application.</p>
+    {{ request.user.username }}
+{% endblock %}
+
