@@ -47,3 +47,15 @@ def list_view(request):
         
 
     return render(request,'views/list.html',{"name":"Automax","listing_form":listing_form,"location_form":location_form})
+
+
+def listing_view(request,id):
+    try:
+        listing = Listing.objects.get(id=id)
+        if listing is None:
+            raise Exception
+        return render(request,'views/listing.html',{"name":"Automax","listing":listing})
+    except Exception as e:
+        print(f"Error occured while fetching the listing: {e}")
+        messages.error(request, f"An Invalid UUID {id} was provided or error could be :{e} ")
+        return redirect('home')
