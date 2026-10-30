@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate,login,logout
 from django.views import View
 
+from main.models import Listing
 from users.forms import LocationForm, ProfileForm, UserForm
 # Create your views here.
 
@@ -56,6 +57,7 @@ class ProfileView(View):
 
         @method_decorator(login_required,name='dispatch')
         def get(self,request):
+            user_listings = Listing.objects.filter(seller=request.user.profile)
             user_form = UserForm(instance=request.user)
             profile_form = ProfileForm(instance=request.user.profile)
             location_form = LocationForm(instance=request.user.profile.location)
@@ -63,11 +65,13 @@ class ProfileView(View):
                 'title': 'Profile',
                 'user_form': user_form,
                 'profile_form': profile_form,
-                'location_form': location_form
+                'location_form': location_form,
+                'user_listings': user_listings
             }
             return render(request, 'views/profile.html', context)
 
         def post(self,request):
+            user_listings = Listing.objects.filter(seller=request.user.profile)
             user_form = UserForm(request.POST,instance=request.user)
             profile_form = ProfileForm(request.POST,request.FILES,instance=request.user.profile)
             location_form = LocationForm(request.POST,instance=request.user.profile.location)
@@ -84,6 +88,8 @@ class ProfileView(View):
                             'title': 'Profile',
                             'user_form': user_form,
                             'profile_form': profile_form,
-                            'location_form': location_form
+                            'location_form': location_form,
+                            'user_listings': user_listings
                         }
             return render(request, 'views/profile.html', context)
+

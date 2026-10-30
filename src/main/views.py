@@ -1,3 +1,5 @@
+from importlib import reload
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
@@ -63,3 +65,31 @@ def listing_view(request,id):
         messages.error(request, f"An Invalid UUID {id} was provided or error could be :{e} ")
         return redirect('home')
 
+def edit_view(request,id):
+    try:
+        listing = Listing.objects.get(id=id)
+        if listing is None:
+            raise Exception
+        if request.method == 'POST':
+            listing_form = ListingForm(request.POST,request.FILES,instance=listing)
+            location_form = LocationForm(request.POST,instance=listing.location)
+            if listing_form.is_valid() and location_form.is_valid():
+                listing_form.save()
+                location_form.save()
+                messages.info(request, f"{listing.model} Listing Updated successfully")
+                return redirect('home')
+            else:
+                messages.error(request, f"An error occurred while trying to edit the listing. Please check the form for errors.")
+                return reload()
+        else:
+            listing_form = ListingForm(instance=listing)
+            location_form = LocationForm(instance=listing.location)
+
+        context = {
+            "listing_form":listing_form,
+            "location_form":location_form,
+        }
+        return render(request,'views/edit.html',context)
+    except Exception as e:
+        messages.error(request, f"An Invalid UUID {id} was provided or error could be :{e} ")
+        return redirect('home')
