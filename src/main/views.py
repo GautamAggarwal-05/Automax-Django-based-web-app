@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 
+from main.filters import ListingsFilter
 from main.form import ListingForm
 from main.models import Listing
 from users.forms import LocationForm
@@ -13,7 +14,13 @@ def main_view(request):
 @login_required
 def home_view(request):
     listings = Listing.objects.all()
-    return render(request, 'views/home.html',{"name":"Automax","listings":listings})
+    listing_filter = ListingsFilter(request.GET, queryset = listings)
+    context = {
+        "name": "Automax",
+        "listings": listings,
+        "listing_filter": listing_filter
+    }
+    return render(request, 'views/home.html', context)
 
 @login_required
 def list_view(request):
