@@ -1,11 +1,14 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
+from django.views import View
 
 from main.filters import ListingsFilter
 from main.form import ListingForm
 from main.models import Listing
 from users.forms import LocationForm
+
+
 
 # Create your views here.
 def main_view(request):
@@ -59,3 +62,4 @@ def listing_view(request,id):
         print(f"Error occured while fetching the listing: {e}")
         messages.error(request, f"An Invalid UUID {id} was provided or error could be :{e} ")
         return redirect('home')
+
