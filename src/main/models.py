@@ -23,3 +23,20 @@ class Listing(models.Model):
 
     def __str__(self):
         return f'{self.seller.user.username}\' s Listings - {self.model}'
+
+
+class LikedListing(models.Model):
+    profile = models.ForeignKey('users.Profile', on_delete=models.CASCADE)
+    listing = models.ForeignKey('Listing', on_delete=models.CASCADE)
+    like_date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=('profile', 'listing'),
+                name='unique_profile_listing_like',
+            ),
+        ]
+
+    def __str__(self):
+        return f'{self.profile.user.username} liked {self.listing.model}'

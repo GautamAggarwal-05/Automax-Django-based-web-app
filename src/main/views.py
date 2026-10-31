@@ -2,12 +2,13 @@ from importlib import reload
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect, render
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 
 from main.filters import ListingsFilter
 from main.form import ListingForm
-from main.models import Listing
+from main.models import LikedListing, Listing
 from users.forms import LocationForm
 
 
@@ -20,10 +21,16 @@ def main_view(request):
 def home_view(request):
     listings = Listing.objects.all()
     listing_filter = ListingsFilter(request.GET, queryset = listings)
+    liked_listing_ids = set(
+        LikedListing.objects.filter(
+            profile=request.user.profile,
+        ).values_list('listing_id', flat=True)
+    )
     context = {
         "name": "Automax",
         "listings": listings,
-        "listing_filter": listing_filter
+        "listing_filter": listing_filter,
+        "liked_listing_ids": liked_listing_ids
     }
     return render(request, 'views/home.html', context)
 
@@ -93,3 +100,21 @@ def edit_view(request,id):
     except Exception as e:
         messages.error(request, f"An Invalid UUID {id} was provided or error could be :{e} ")
         return redirect('home')
+
+@login_required
+def liked_listings_view(request, id):
+    if request.method != 'POST':
+        return JsonResponse({'error': 'Only POST requests are allowed.'}, status=405)
+
+    listing = get_object_or_404(Listing, id=id)
+    liked_listing, created = LikedListing.objects.get_or_create(
+        profile=request.user.profile,
+        listing=listing,
+    )
+
+    if not created:
+        liked_listing.delete()
+
+    return JsonResponse({
+        'is_liked_by_user': created,
+    })
