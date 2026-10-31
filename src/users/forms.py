@@ -1,4 +1,6 @@
 from django import forms
+
+from users.widgets import CustomPhotoImageFieldWidget
 from .models import Location, Profile, User
 from localflavor.us.forms import USStateSelect, USZipCodeField
 
@@ -9,7 +11,8 @@ class UserForm(forms.ModelForm):
         fields = {'username', 'first_name','last_name'}
 
 class ProfileForm(forms.ModelForm):
-
+    photo = forms.ImageField(widget=CustomPhotoImageFieldWidget)
+    bio = forms.TextInput()
     class Meta:
         model = Profile
         fields = {'photo', 'bio', 'phone_number'}
