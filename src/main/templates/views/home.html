@@ -7,33 +7,70 @@
 
 
 {% block body %}
-<main>
-     <section class="py-5 container">
-        <div class="row py-lg-5">
-            <div class="col-lg-6 col-md-8 mx-auto">
-                <h1 class="fw-light">AutoMax</h1>
-                <p class="lead text-muted">The best place to buy or sell modern enthusiast cars, and we’ve
-                    made it that much easier.</p>
-                <a href="{% url 'list' %}" class="btn btn-primary my-2">List Your Car</a>
-            </div>
-            <div class="col-lg-6 col-md-8 mx-auto">
-                <form method="get">
-                    {{ listing_filter.form|crispy }}
-                    <button class="btn btn-sm btn-danger" type="submit">Submit</button>
-                </form>
+<div class="nb-home">
+    <section class="nb-wrap nb-hero">
+        <div class="nb-hero__panel">
+            <span class="nb-sticker nb-sticker--yellow nb-hero__tag">Buy &amp; sell cars</span>
+            <h1 class="nb-hero__title">AutoMax</h1>
+            <p class="nb-hero__lead">The best place to buy or sell modern enthusiast cars, and we’ve
+                made it that much easier.</p>
+            <div class="nb-hero__cta">
+                <a href="{% url 'list' %}" class="nb-btn nb-btn--blue nb-btn--lg">List Your Car</a>
+                <a href="#cars" class="nb-btn nb-btn--white nb-btn--lg">Browse cars</a>
             </div>
         </div>
-    </section> 
-    <div class="album py-5 bg-light">
-        <div class="container">
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                {% for listing in listing_filter.qs %}
-                <div class="col">
-                    {% include "components/listing_card.html" %}
+        <div class="nb-hero__art" aria-hidden="true">
+            <span class="nb-sticker nb-sticker--pink nb-hero__art-sticker">No boring rides</span>
+            <svg class="nb-hero__car" viewBox="0 0 480 240" xmlns="http://www.w3.org/2000/svg" focusable="false">
+                <rect x="24" y="196" width="432" height="10" fill="#111111"/>
+                <path d="M14 112H72M0 138H54M22 164H80" stroke="#111111" stroke-width="8" stroke-linecap="square"/>
+                <path d="M92 168V128q0-14 16-18l50-12 36-44q6-6 16-6h96q12 0 20 8l40 42 50 10q16 4 16 20v40z"
+                      fill="#4D7CFE" stroke="#111111" stroke-width="8" stroke-linejoin="round"/>
+                <path d="M196 96l26-32h80l36 36z" fill="#FFFFFF" stroke="#111111" stroke-width="8" stroke-linejoin="round"/>
+                <path d="M258 66v34" stroke="#111111" stroke-width="8"/>
+                <rect x="432" y="128" width="20" height="18" fill="#FFE94A" stroke="#111111" stroke-width="6"/>
+                <rect x="88" y="134" width="14" height="18" fill="#FF6B9E" stroke="#111111" stroke-width="6"/>
+                <circle cx="168" cy="178" r="36" fill="#111111"/>
+                <circle cx="168" cy="178" r="14" fill="#FFE94A"/>
+                <circle cx="372" cy="178" r="36" fill="#111111"/>
+                <circle cx="372" cy="178" r="14" fill="#FFE94A"/>
+            </svg>
+        </div>
+    </section>
+
+    {% include "components/ticker.html" with tone="pink" %}
+
+    {% with results=listing_filter.qs %}
+    <section class="nb-wrap nb-section" id="cars">
+        <div class="nb-section__head">
+            <h2 class="nb-h2">Find a car</h2>
+            <p class="nb-count"><span class="nb-count__num">{{ results|length }}</span> found</p>
+        </div>
+
+        <div class="nb-panel nb-filter">
+            <form method="get" class="nb-filter__form nb-form">
+                {{ listing_filter.form|crispy }}
+                <div class="nb-filter__actions">
+                    <button class="nb-btn nb-btn--blue" type="submit">Search</button>
+                    <a href="{% url 'home' %}" class="nb-btn nb-btn--white">Reset</a>
                 </div>
-                {% endfor %}
-            </div>
+            </form>
         </div>
-    </div>
-</main>
+
+        <div class="nb-grid">
+            {% for listing in results %}
+            <div class="nb-grid__item">
+                {% include "components/listing_card.html" %}
+            </div>
+            {% empty %}
+            <div class="nb-empty">
+                <p class="nb-empty__title">No cars match that search.</p>
+                <p>Try a different brand or model, or clear the filters.</p>
+                <a href="{% url 'home' %}" class="nb-btn nb-btn--yellow">Reset filters</a>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endwith %}
+</div>
 {% endblock %}

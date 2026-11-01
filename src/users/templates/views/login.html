@@ -3,16 +3,22 @@
 {% load crispy_forms_tags %}
 
 {% block body %}
-<div class="text-center">
-    <main class="form-signin">
-        <form action="" method="post">
-            <img class="mb-4" src="{% static 'images/logo.png' %}" alt="" width="72" height="72">
+<div class="nb-wrap nb-auth">
+    <section class="nb-auth__intro nb-auth__intro--blue">
+        <img class="nb-auth__logo" src="{% static 'images/logo.png' %}" alt="" width="96" height="96">
+        <h1 class="nb-h1">Welcome back</h1>
+        <p>Sign in to browse cars, like your favourites and manage your listings.</p>
+    </section>
+
+    <section class="nb-panel nb-panel--white nb-auth__panel">
+        <form action="" method="post" class="nb-form">
             {% csrf_token %}
             {{ login_form|crispy }}
-            <button class="w-100 btn btn-lg btn-danger" type="submit">Sign In</button>
-            <p class="mt-5 mb-3 text-muted">Copyright © {% now "Y" %} AutoMax</p>
+            <button class="nb-btn nb-btn--blue nb-btn--lg nb-btn--block" type="submit">Sign In</button>
+            <p class="nb-auth__switch">New here? <a href="{% url 'register' %}">Create an account</a></p>
+            <p class="nb-auth__copy">Copyright © {% now "Y" %} AutoMax</p>
         </form>
-    </main>
+    </section>
 </div>
 {% endblock %}
 

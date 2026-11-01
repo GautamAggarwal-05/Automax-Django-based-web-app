@@ -1,41 +1,63 @@
 {% extends 'base/base.html' %}
 {% load static %}
 {% block body %}
-<div class="d-flex h-100 text-center text-white index">
-    <video autoplay muted loop id="myVideo">
-        <source src="{% static 'videos/bg.mp4' %}" type="video/mp4">
-        <!-- Credit: https://www.pexels.com/@kelly-l-1179532 (Pexels.com)-->
-    </video>
-    <div class="d-flex w-100 h-100 p-3 mx-auto flex-column main-content">
-        <header class="mb-auto">
-            <div>
-                <h3 class="float-md-start mb-0">AutoMax</h3>
-                <nav class="nav nav-masthead justify-content-center float-md-end">
-                    {% if request.user.is_authenticated %}
-                    <a class="nav-link active" aria-current="page" href={% url 'home' %}>Home</a>
-                    {% else %}
-                    <a class="nav-link" href={% url 'login' %}>Login</a>
-                    {% endif %}
-                </nav>
+<div class="nb-landing">
+    <section class="nb-wrap nb-landing__hero">
+        <div class="nb-landing__copy">
+            <span class="nb-sticker nb-sticker--yellow nb-landing__tag">Buy &amp; sell used cars</span>
+            <h1 class="nb-landing__title">Find a deal near you!</h1>
+            <p class="nb-landing__lead">Looking to buy or sell a used car? We've got you
+                covered. <br> AutoMax is the leading used car marketplace.</p>
+            <div class="nb-landing__cta">
+                <a href="{% url 'register' %}" class="nb-btn nb-btn--blue nb-btn--lg">Register</a>
+                {% if request.user.is_authenticated %}
+                <a href="{% url 'home' %}" class="nb-btn nb-btn--white nb-btn--lg">Home</a>
+                {% else %}
+                <a href="{% url 'login' %}" class="nb-btn nb-btn--white nb-btn--lg">Login</a>
+                {% endif %}
             </div>
-        </header>
-        <main class="px-3">
-            <h2>Find a deal near you!</h2>
-            <p class="lead">Looking to buy or sell a used car? We've got you
-                covered. </br> AutoMax is the leading used car marketplace.</p>
-            <p class="lead">
-                <a href={% url 'register' %}
-                    class="btn btn-lg btn-secondary fw-bold border-white bg-white">Register</a>
-            </p>
-        </main>
-        <footer class="mt-auto text-white-50">
-            <p>Copyright © {% now 'Y' %} <a href="" class="text-white">AutoMax</a> by <a href="https://resellcar.com"
-                    class="text-white">ResellCar.com</a></p>
-        </footer>
-    </div>
+        </div>
+
+        <div class="nb-landing__screen">
+            <div class="nb-landing__screen-bar" aria-hidden="true"><i></i><i></i><i></i></div>
+            <video autoplay muted loop playsinline preload="metadata" id="myVideo" aria-hidden="true" tabindex="-1">
+                <source src="{% static 'videos/bg.mp4' %}" type="video/mp4">
+                <!-- Credit: https://www.pexels.com/@kelly-l-1179532 (Pexels.com)-->
+            </video>
+            <span class="nb-sticker nb-sticker--pink nb-landing__screen-sticker" aria-hidden="true">No boring rides</span>
+        </div>
+    </section>
+
+    {% include "components/ticker.html" with tone="blue" %}
+
+    <section class="nb-wrap nb-steps">
+        <h2 class="nb-h2">How it works</h2>
+        <ol class="nb-steps__list">
+            <li class="nb-step nb-step--pink">
+                <span class="nb-step__num">1</span>
+                <h3 class="nb-h3">Register</h3>
+                <p>Create an account and fill in your profile.</p>
+            </li>
+            <li class="nb-step nb-step--green">
+                <span class="nb-step__num">2</span>
+                <h3 class="nb-h3">List your car</h3>
+                <p>Add the details, a photo and where the car is.</p>
+            </li>
+            <li class="nb-step nb-step--blue">
+                <span class="nb-step__num">3</span>
+                <h3 class="nb-h3">Browse and like</h3>
+                <p>Search by brand, model, gearbox or mileage and save your favourites.</p>
+            </li>
+        </ol>
+    </section>
+
+    <footer class="nb-landing__foot">
+        <div class="nb-wrap">
+            <p>Copyright © {% now 'Y' %} <a href="">AutoMax</a> by <a href="https://resellcar.com">ResellCar.com</a></p>
+        </div>
+    </footer>
 </div>
 {% endblock %}
 
 {% block footer%}
 {% endblock%}
-

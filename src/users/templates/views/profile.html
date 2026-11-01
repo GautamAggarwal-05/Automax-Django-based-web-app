@@ -3,72 +3,72 @@
 {% load crispy_forms_tags %}
 
 {% block body %}
-<div class="container-fluid text-center py-5">
-    <div class="container px-4 py-5" id="hanging-icons">
-        <div class="row g-4">
-            <div class="col d-flex align-items-start">
-                <div>
-                    <h2 class="mb-3 border-bottom" style="color: black">Profile</h2>
-                </div>
-            </div>
-        </div>
-        <form action="" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="row">
-                <div class="col-6">
-                    {{ user_form|crispy }}
-                    {{ profile_form|crispy }}
-                </div>
-                <div class="col-6">
-                    {{ location_form|crispy }}
-                </div>
-                <br>
-                <button class="btn btn-lg btn-danger" type="submit" value="Submit">Save</button>
-            </div>
-        </form>
-    </div>
-    <div class="container px-4">
-        <div class="row g-4 py-5">
-            <div class="col d-flex align-items-start">
-                <div>
-                    <h2 class="mb-3 border-bottom" style="color: black">Your Listings</h2>
-                </div>
-            </div>
-        </div>
-        <table class="table table-hover">
-            <tbody>
-                {% for listing in user_listings %}
-                <tr>
-                    <td>{{ listing.id }}</td>
-                    <td>{{listing.model }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+<div class="nb-wrap nb-page">
+    <header class="nb-pagehead">
+        <span class="nb-sticker nb-sticker--blue">Your account</span>
+        <h1 class="nb-h1">Profile</h1>
+    </header>
 
-    <div class="container px-4">
-        <div class="row g-4 py-5">
-            <div class="col d-flex align-items-start">
-                <div>
-                    <h2 class="mb-3 border-bottom" style="color: black">Liked Listings</h2>
-                </div>
+    <form action="" method="post" enctype="multipart/form-data" class="nb-form">
+        {% csrf_token %}
+        <div class="nb-form__grid">
+            <section class="nb-panel nb-panel--white">
+                <h2 class="nb-h3">About you</h2>
+                {{ user_form|crispy }}
+                {{ profile_form|crispy }}
+            </section>
+            <section class="nb-panel nb-panel--pink">
+                <h2 class="nb-h3">Where you are</h2>
+                {{ location_form|crispy }}
+            </section>
+        </div>
+        <div class="nb-form__submit">
+            <button class="nb-btn nb-btn--blue nb-btn--lg" type="submit" value="Submit">Save</button>
+        </div>
+    </form>
+
+    <section class="nb-section">
+        <h2 class="nb-h2">Your Listings</h2>
+        <div class="nb-panel nb-panel--flush">
+            <div class="table-responsive nb-table-wrap">
+                <table class="nb-table">
+                    <tbody>
+                        {% for listing in user_listings %}
+                        <tr>
+                            <td class="nb-table__id">{{ listing.id }}</td>
+                            <td>{{listing.model }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="2">You have not listed any cars yet. <a href="{% url 'list' %}">List your first car</a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
-        <table class="table table-hover">
-            <tbody>
-                {% for liked_listing in user_liked_listings %}
-                <tr>
-                    <td>{{ liked_listing.listing.model }}</td>
-                    <td>{{ liked_listing.like_date }}</td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="2">You have not liked any listings yet.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div> 
+    </section>
+
+    <section class="nb-section">
+        <h2 class="nb-h2">Liked Listings</h2>
+        <div class="nb-panel nb-panel--flush">
+            <div class="table-responsive nb-table-wrap">
+                <table class="nb-table">
+                    <tbody>
+                        {% for liked_listing in user_liked_listings %}
+                        <tr>
+                            <td>{{ liked_listing.listing.model }}</td>
+                            <td>{{ liked_listing.like_date }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="2">You have not liked any listings yet.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
 </div>
 {% endblock %}
