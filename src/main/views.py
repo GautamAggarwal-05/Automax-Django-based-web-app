@@ -10,7 +10,7 @@ from main.filters import ListingsFilter
 from main.form import ListingForm
 from main.models import LikedListing, Listing
 from users.forms import LocationForm
-
+from .kafka_producer import publish_listing_created
 
 
 # Create your views here.
@@ -46,6 +46,7 @@ def list_view(request):
                     listing.seller = request.user.profile
                     listing.location = listing_location
                     listing.save()
+                    publish_listing_created(listing)  # Publish the event to Kafka
                     messages.info(request, f"{listing.model} Listing Posted successfully")
                     return redirect('home')
             else:
