@@ -3,39 +3,58 @@
 {% load crispy_forms_tags %}
 
 {% block body %}
-<div class="nb-wrap nb-page">
-    <header class="nb-pagehead">
-        <span class="nb-sticker nb-sticker--blue">Your account</span>
-        <h1 class="nb-h1">Profile</h1>
+<div class="sw-page">
+    <header class="sw-wrap sw-grid sw-pagehead">
+        <p class="sw-label sw-pagehead__label"><span class="sw-dot"></span> 01 / Your account</p>
+        <h1 class="sw-pagehead__title">Profile<span class="sw-red">.</span></h1>
     </header>
 
-    <form action="" method="post" enctype="multipart/form-data" class="nb-form">
+    <form action="" method="post" enctype="multipart/form-data" class="sw-form">
         {% csrf_token %}
-        <div class="nb-form__grid">
-            <section class="nb-panel nb-panel--white">
-                <h2 class="nb-h3">About you</h2>
-                {{ user_form|crispy }}
-                {{ profile_form|crispy }}
-            </section>
-            <section class="nb-panel nb-panel--pink">
-                <h2 class="nb-h3">Where you are</h2>
-                {{ location_form|crispy }}
-            </section>
-        </div>
-        <div class="nb-form__submit">
-            <button class="nb-btn nb-btn--blue nb-btn--lg" type="submit" value="Submit">Save</button>
-        </div>
+        <section class="sw-section">
+            <div class="sw-wrap sw-grid sw-section__grid">
+                <div class="sw-section__label">
+                    <p class="sw-num">01</p>
+                    <p class="sw-label">About you</p>
+                </div>
+                <div class="sw-fields">
+                    {{ user_form|crispy }}
+                    {{ profile_form|crispy }}
+                </div>
+            </div>
+        </section>
+        <section class="sw-section">
+            <div class="sw-wrap sw-grid sw-section__grid">
+                <div class="sw-section__label">
+                    <p class="sw-num">02</p>
+                    <p class="sw-label">Where you are</p>
+                </div>
+                <div class="sw-fields">
+                    {{ location_form|crispy }}
+                </div>
+            </div>
+        </section>
+        <section class="sw-section sw-submitrow">
+            <div class="sw-wrap sw-grid sw-section__grid">
+                <div class="sw-fields-actions">
+                    <button class="sw-btn sw-btn--red" type="submit" value="Submit">Save &rarr;</button>
+                </div>
+            </div>
+        </section>
     </form>
 
-    <section class="nb-section">
-        <h2 class="nb-h2">Your Listings</h2>
-        <div class="nb-panel nb-panel--flush">
-            <div class="table-responsive nb-table-wrap">
-                <table class="nb-table">
+    <section class="sw-section">
+        <div class="sw-wrap sw-grid sw-section__grid">
+            <div class="sw-section__label">
+                <p class="sw-num">03</p>
+                <h2 class="sw-label">Your Listings</h2>
+            </div>
+            <div class="sw-listtable table-responsive">
+                <table class="sw-table sw-table--list">
                     <tbody>
                         {% for listing in user_listings %}
                         <tr>
-                            <td class="nb-table__id">{{ listing.id }}</td>
+                            <td class="sw-table__id">{{ listing.id }}</td>
                             <td>{{listing.model }}</td>
                         </tr>
                         {% empty %}
@@ -49,11 +68,14 @@
         </div>
     </section>
 
-    <section class="nb-section">
-        <h2 class="nb-h2">Liked Listings</h2>
-        <div class="nb-panel nb-panel--flush">
-            <div class="table-responsive nb-table-wrap">
-                <table class="nb-table">
+    <section class="sw-section">
+        <div class="sw-wrap sw-grid sw-section__grid">
+            <div class="sw-section__label">
+                <p class="sw-num">04</p>
+                <h2 class="sw-label">Liked Listings</h2>
+            </div>
+            <div class="sw-listtable table-responsive">
+                <table class="sw-table sw-table--list">
                     <tbody>
                         {% for liked_listing in user_liked_listings %}
                         <tr>

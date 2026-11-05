@@ -8,74 +8,117 @@
 </title>
 
 {% block body %}
-<div class="nb-detail">
-    <section class="nb-wrap nb-detail__top">
-        <a href="{% url 'home' %}" class="nb-back">&larr; All cars</a>
-        <div class="nb-detail__hero">
-            <figure class="nb-detail__figure">
-                <img src="{{ listing.image.url }}" class="nb-detail__img" width="1920" height="1080"
-                    loading="lazy" alt="{{ listing.get_brand_display }} {{ listing.model }}">
-                <span class="nb-sticker nb-sticker--yellow nb-detail__sticker">{{ listing.get_brand_display }}</span>
-            </figure>
-            <div class="nb-detail__intro">
-                <h1 class="nb-detail__title">{{ listing.model }}</h1>
-                <p class="nb-detail__meta">{{ listing.seller.user.username }} - {{ listing.updated_at }}</p>
+<div class="sw-detail">
+
+    <!-- 01 / VEHICLE DETAILS -->
+    <section class="sw-detail__head">
+        <div class="sw-wrap sw-grid">
+            <div class="sw-detail__crumbs">
+                <a href="{% url 'home' %}" class="sw-back">&larr; All cars</a>
+                <p class="sw-label"><span class="sw-dot"></span> 01 / Vehicle details</p>
+            </div>
+            <h1 class="sw-detail__title">{{ listing.model }}<span class="sw-red">.</span></h1>
+            <div class="sw-detail__meta">
+                <p class="sw-label">{{ listing.get_brand_display }}</p>
+                <p class="sw-detail__seller">{{ listing.seller.user.username }}</p>
+                <p class="sw-detail__date">{{ listing.updated_at }}</p>
             </div>
         </div>
     </section>
 
-    <section class="nb-wrap nb-detail__info">
-        <h2 class="nb-h2">Auto Information</h2>
-        <div class="nb-detail__grid">
-            <div class="nb-panel nb-panel--flush">
-                <div class="table-responsive nb-table-wrap">
-                    <table class="nb-table nb-table--specs">
-                        <tbody>
-                            <tr>
-                                <th scope="row">Brand</th>
-                                <td> {{listing.get_brand_display }}</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Vin</th>
-                                <td> {{listing.vin }}</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Mileage</th>
-                                <td> {{listing.mileage }}</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Color</th>
-                                <td> {{listing.color }}</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Engine</th>
-                                <td> {{listing.engine }}</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Transmission</th>
-                                <td> {{listing.transmission|capfirst }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+    <section class="sw-wrap sw-grid sw-detail__body">
+        <figure class="sw-detail__figure">
+            <img src="{{ listing.image.url }}" class="sw-detail__img" width="1920" height="1080"
+                loading="lazy" alt="{{ listing.get_brand_display }} {{ listing.model }}">
+        </figure>
 
-            <aside class="nb-panel nb-panel--green nb-contact">
-                <h3 class="nb-h3">Location</h3>
-                <ul class="nb-contact__list">
-                    <li>{{ listing.location.city }}, {{ listing.location.state }},
-                        {{listing.location.zip_code }} </li>
-                </ul>
-                <button class="nb-btn nb-btn--white nb-btn--block">{{listing.seller.phone_number}}</button>
-                <button id="sendEmail" class="nb-btn nb-btn--blue nb-btn--block">Send Email</button>
-            </aside>
+        <div class="sw-detail__specs">
+            <div class="sw-subhead"><span class="sw-num sw-num--sm">02</span><h2 class="sw-label">Auto Information</h2></div>
+            <div class="table-responsive">
+                <table class="sw-table">
+                    <tbody>
+                        <tr>
+                            <th scope="row">Brand</th>
+                            <td> {{listing.get_brand_display }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Vin</th>
+                            <td> {{listing.vin }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Mileage</th>
+                            <td> {{listing.mileage }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Color</th>
+                            <td> {{listing.color }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Engine</th>
+                            <td> {{listing.engine }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Transmission</th>
+                            <td> {{listing.transmission|capfirst }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </section>
 
-    <section class="nb-wrap nb-detail__desc">
-        <h2 class="nb-h2">Description</h2>
-        <div class="nb-panel nb-panel--white">
-            <p class="nb-prose"> {{ listing.description }}</p>
+    <!-- 03 / CONTACT -->
+    <section class="sw-section">
+        <div class="sw-wrap sw-grid sw-section__grid">
+            <div class="sw-section__label">
+                <p class="sw-num">03</p>
+                <p class="sw-label">Contact the seller</p>
+                <h2 class="sw-h3 sw-detail__locationhead">Location</h2>
+                <p class="sw-detail__location">{{ listing.location.city }}, {{ listing.location.state }},
+                    {{listing.location.zip_code }} </p>
+            </div>
+
+            <div class="sw-contact">
+                <button class="sw-btn sw-btn--ghost sw-contact__phone">{{listing.seller.phone_number}}</button>
+
+                {% if request.user.is_authenticated %}
+                {% if listing.seller.user.email %}
+                <form action="{% url 'send_email' id=listing.id %}" method="post" class="sw-form sw-mail">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="mail_subject">Subject</label>
+                        <input type="text" id="mail_subject" name="subject" class="form-control" maxlength="150" required
+                            value="Inquiry about {{ listing.get_brand_display }} {{ listing.model }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="mail_message">Message</label>
+                        <textarea id="mail_message" name="message" class="form-control" rows="5" maxlength="5000" required
+                            placeholder="Hello, is this car still available?"></textarea>
+                        <small class="form-text">Your message is sent to the seller by email. They can reply to you directly.</small>
+                    </div>
+                    <button id="sendEmail" type="submit" class="sw-btn sw-btn--red">Send Email &rarr;</button>
+                </form>
+                {% else %}
+                <p class="sw-note">This seller has not added an email address yet.</p>
+                {% endif %}
+                {% else %}
+                <p class="sw-note">Log in to send the seller an email.</p>
+                <a href="{% url 'login' %}" class="sw-btn sw-btn--red">Login &rarr;</a>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <!-- 04 / DESCRIPTION -->
+    <section class="sw-section">
+        <div class="sw-wrap sw-grid sw-section__grid">
+            <div class="sw-section__label">
+                <p class="sw-num">04</p>
+                <p class="sw-label">Description</p>
+            </div>
+            <div class="sw-detail__desc">
+                <p class="sw-prose"> {{ listing.description }}</p>
+            </div>
         </div>
     </section>
 </div>

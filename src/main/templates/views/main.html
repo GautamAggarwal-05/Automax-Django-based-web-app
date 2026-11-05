@@ -1,58 +1,82 @@
 {% extends 'base/base.html' %}
 {% load static %}
 {% block body %}
-<div class="nb-landing">
-    <section class="nb-wrap nb-landing__hero">
-        <div class="nb-landing__copy">
-            <span class="nb-sticker nb-sticker--yellow nb-landing__tag">Buy &amp; sell used cars</span>
-            <h1 class="nb-landing__title">Find a deal near you!</h1>
-            <p class="nb-landing__lead">Looking to buy or sell a used car? We've got you
+<div class="sw-landing">
+
+    <!-- 01 / DISCOVER -->
+    <section class="sw-hero">
+        {% include "components/gridlines.html" %}
+        <div class="sw-wrap sw-grid sw-hero__grid">
+            <div class="sw-hero__meta">
+                <p class="sw-label"><span class="sw-dot"></span> 01 / Discover</p>
+                <p class="sw-label">AutoMax</p>
+            </div>
+
+            <h1 class="sw-hero__title">Find a deal near you<span class="sw-red">!</span></h1>
+
+            <div class="sw-hero__circle sw-hero__circle--text">
+                <p class="sw-hero__count-label">Buy &amp; sell<br>used cars</p>
+            </div>
+
+            <p class="sw-hero__lead">Looking to buy or sell a used car? We've got you
                 covered. <br> AutoMax is the leading used car marketplace.</p>
-            <div class="nb-landing__cta">
-                <a href="{% url 'register' %}" class="nb-btn nb-btn--blue nb-btn--lg">Register</a>
+
+            <div class="sw-hero__cta">
+                <a href="{% url 'register' %}" class="sw-btn sw-btn--red">Register &rarr;</a>
                 {% if request.user.is_authenticated %}
-                <a href="{% url 'home' %}" class="nb-btn nb-btn--white nb-btn--lg">Home</a>
+                <a href="{% url 'home' %}" class="sw-btn sw-btn--ghost">Home</a>
                 {% else %}
-                <a href="{% url 'login' %}" class="nb-btn nb-btn--white nb-btn--lg">Login</a>
+                <a href="{% url 'login' %}" class="sw-btn sw-btn--ghost">Login</a>
                 {% endif %}
             </div>
         </div>
+    </section>
 
-        <div class="nb-landing__screen">
-            <div class="nb-landing__screen-bar" aria-hidden="true"><i></i><i></i><i></i></div>
-            <video autoplay muted loop playsinline preload="metadata" id="myVideo" aria-hidden="true" tabindex="-1">
-                <source src="{% static 'videos/bg.mp4' %}" type="video/mp4">
-                <!-- Credit: https://www.pexels.com/@kelly-l-1179532 (Pexels.com)-->
-            </video>
-            <span class="nb-sticker nb-sticker--pink nb-landing__screen-sticker" aria-hidden="true">No boring rides</span>
+    <!-- 02 / WATCH -->
+    <section class="sw-section sw-reel">
+        <div class="sw-wrap sw-grid sw-section__grid">
+            <div class="sw-section__label">
+                <p class="sw-num">02</p>
+                <p class="sw-label">On the road</p>
+            </div>
+            <div class="sw-reel__frame">
+                <video autoplay muted loop playsinline preload="metadata" id="myVideo" aria-hidden="true" tabindex="-1">
+                    <source src="{% static 'videos/bg.mp4' %}" type="video/mp4">
+                    <!-- Credit: https://www.pexels.com/@kelly-l-1179532 (Pexels.com)-->
+                </video>
+            </div>
         </div>
     </section>
 
-    {% include "components/ticker.html" with tone="blue" %}
-
-    <section class="nb-wrap nb-steps">
-        <h2 class="nb-h2">How it works</h2>
-        <ol class="nb-steps__list">
-            <li class="nb-step nb-step--pink">
-                <span class="nb-step__num">1</span>
-                <h3 class="nb-h3">Register</h3>
-                <p>Create an account and fill in your profile.</p>
-            </li>
-            <li class="nb-step nb-step--green">
-                <span class="nb-step__num">2</span>
-                <h3 class="nb-h3">List your car</h3>
-                <p>Add the details, a photo and where the car is.</p>
-            </li>
-            <li class="nb-step nb-step--blue">
-                <span class="nb-step__num">3</span>
-                <h3 class="nb-h3">Browse and like</h3>
-                <p>Search by brand, model, gearbox or mileage and save your favourites.</p>
-            </li>
-        </ol>
+    <!-- 03 / HOW IT WORKS -->
+    <section class="sw-section">
+        <div class="sw-wrap sw-grid sw-section__grid">
+            <div class="sw-section__label">
+                <p class="sw-num">03</p>
+                <p class="sw-label">How it works</p>
+            </div>
+            <ol class="sw-steps">
+                <li class="sw-step">
+                    <span class="sw-step__num">1</span>
+                    <h3 class="sw-h3">Register</h3>
+                    <p>Create an account and fill in your profile.</p>
+                </li>
+                <li class="sw-step">
+                    <span class="sw-step__num">2</span>
+                    <h3 class="sw-h3">List your car</h3>
+                    <p>Add the details, a photo and where the car is.</p>
+                </li>
+                <li class="sw-step">
+                    <span class="sw-step__num">3</span>
+                    <h3 class="sw-h3">Browse and like</h3>
+                    <p>Search by brand, model, gearbox or mileage and save your favourites.</p>
+                </li>
+            </ol>
+        </div>
     </section>
 
-    <footer class="nb-landing__foot">
-        <div class="nb-wrap">
+    <footer class="sw-footer sw-landing__foot">
+        <div class="sw-wrap sw-footer__inner">
             <p>Copyright © {% now 'Y' %} <a href="">AutoMax</a> by <a href="https://resellcar.com">ResellCar.com</a></p>
         </div>
     </footer>

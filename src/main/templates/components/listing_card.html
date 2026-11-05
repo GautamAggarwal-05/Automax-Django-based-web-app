@@ -1,61 +1,60 @@
 {% load static %}
 
-<article class="nb-card">
-    <div class="nb-card__media">
-        <a href="{% url 'listing' id=listing.id%}" class="nb-card__media-link" tabindex="-1" aria-hidden="true">
-            <img class="nb-card__img" src="{{listing.image.url}}" alt="{{ listing.get_brand_display }} {{ listing.model }}" loading="lazy">
-        </a>
-        <span class="nb-sticker nb-sticker--yellow nb-card__brand">{{ listing.get_brand_display }}</span>
+<article class="sw-card">
+    <div class="sw-card__top">
+        <span class="sw-card__idx">{{ forloop.counter|stringformat:"02d" }}</span>
+        <span class="sw-card__brand">{{ listing.get_brand_display }}</span>
         {% if listing.seller.user == request.user %}
-        <span class="nb-sticker nb-sticker--green nb-card__yours">Yours</span>
+        <span class="sw-card__yours">Yours</span>
         {% endif %}
     </div>
-    <div class="nb-card__body">
-        <h3 class="nb-card__title">{{listing.model}}</h3>
+    <a href="{% url 'listing' id=listing.id%}" class="sw-card__media" tabindex="-1" aria-hidden="true">
+        <img class="sw-card__img" src="{{listing.image.url}}" alt="{{ listing.get_brand_display }} {{ listing.model }}" loading="lazy">
+    </a>
+    <h3 class="sw-card__title">{{listing.model}}</h3>
 
-        <div class="nb-card__seller">
-            {% if listing.seller.photo %}
-            <img src="{{listing.seller.photo.url}}" class="nb-avatar rounded-circle" height="30" width="30"
-                style="object-fit: cover;" alt="">
+    <dl class="sw-specs">
+        <div><dt>Mileage</dt><dd>{{ listing.mileage }}</dd></div>
+        <div><dt>Gearbox</dt><dd>{{ listing.get_transmission_display }}</dd></div>
+        <div><dt>Engine</dt><dd>{{ listing.engine }}</dd></div>
+    </dl>
+
+    <p class="sw-card__desc">{{listing.description}}</p>
+
+    <div class="sw-card__seller">
+        {% if listing.seller.photo %}
+        <img src="{{listing.seller.photo.url}}" class="sw-avatar rounded-circle" height="28" width="28"
+            style="object-fit: cover;" alt="">
+        {% else %}
+        <img src="{% static 'images/logo.png' %}" class="sw-avatar rounded-circle" height="28" width="28"
+            style="object-fit: cover;" alt="">
+        {% endif %}
+        <p class="sw-card__seller-name"><span class="visually-hidden">Seller: </span>{{listing.seller.user.username}}</p>
+        <time class="sw-card__date" datetime="{{ listing.updated_at|date:'c' }}">{{listing.updated_at|date:"j M Y"}}</time>
+    </div>
+
+    <div class="sw-card__actions">
+        <a href="{% url 'listing' id=listing.id%}" class="sw-btn sw-btn--sm">View details &rarr;</a>
+        {% if listing.seller.user == request.user %}
+        <a href="{% url 'edit' id=listing.id%}" class="sw-btn sw-btn--ghost sw-btn--sm">Edit</a>
+        {% endif %}
+        <button id="like_{{listing.id}}" type="button" value="like" class="sw-like" aria-label="Like this listing" title="Like">
+            {% if listing.id in liked_listing_ids %}
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" class="bi bi-heart"
+                viewBox="0 0 16 16" aria-hidden="true">
+                <path
+                    d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z">
+                </path>
+            </svg>
             {% else %}
-            <img src="{% static 'images/logo.png' %}" class="nb-avatar rounded-circle" height="30" width="30"
-                style="object-fit: cover;" alt="">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-heart"
+                viewBox="0 0 16 16" aria-hidden="true">
+                <path
+                    d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z">
+                </path>
+            </svg>
             {% endif %}
-            <p class="nb-card__seller-name"><span class="visually-hidden">Seller: </span>{{listing.seller.user.username}}</p>
-        </div>
-
-        <ul class="nb-specs">
-            <li><span class="nb-specs__k">Mileage</span><span class="nb-specs__v">{{ listing.mileage }}</span></li>
-            <li><span class="nb-specs__k">Gearbox</span><span class="nb-specs__v">{{ listing.get_transmission_display }}</span></li>
-            <li><span class="nb-specs__k">Engine</span><span class="nb-specs__v">{{ listing.engine }}</span></li>
-        </ul>
-
-        <p class="nb-card__desc">{{listing.description}}</p>
-
-        <div class="nb-card__actions">
-            <a href="{% url 'listing' id=listing.id%}" class="nb-btn nb-btn--yellow nb-btn--sm">View</a>
-            {% if listing.seller.user == request.user %}
-            <a href="{% url 'edit' id=listing.id%}" class="nb-btn nb-btn--white nb-btn--sm">Edit</a>
-            {% endif %}
-            <time class="nb-card__date" datetime="{{ listing.updated_at|date:'c' }}">{{listing.updated_at|date:"j M Y"}}</time>
-            <button id="like_{{listing.id}}" type="button" value="like" class="nb-like" aria-label="Like this listing" title="Like">
-                {% if listing.id in liked_listing_ids %}
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" class="bi bi-heart"
-                    viewBox="0 0 16 16" aria-hidden="true">
-                    <path
-                        d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z">
-                    </path>
-                </svg>
-                {% else %}
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-heart"
-                    viewBox="0 0 16 16" aria-hidden="true">
-                    <path
-                        d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z">
-                    </path>
-                </svg>
-                {% endif %}
-            </button>
-        </div>
+        </button>
     </div>
 </article>
  

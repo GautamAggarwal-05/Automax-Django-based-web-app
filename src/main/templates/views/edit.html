@@ -3,29 +3,45 @@
 {% load crispy_forms_tags %}
 
 {% block body %}
-<div class="nb-wrap nb-page">
-    <header class="nb-pagehead">
-        <span class="nb-sticker nb-sticker--yellow">Editing</span>
-        <h1 class="nb-h1">Edit</h1>
-        <p class="nb-pagehead__lead">Change anything below, then save.</p>
+<div class="sw-page">
+    <header class="sw-wrap sw-grid sw-pagehead">
+        <p class="sw-label sw-pagehead__label"><span class="sw-dot"></span> 01 / Editing</p>
+        <h1 class="sw-pagehead__title">Edit listing<span class="sw-red">.</span></h1>
+        <p class="sw-pagehead__lead">Change anything below, then save.</p>
     </header>
 
-    <form action="" method="post" enctype="multipart/form-data" class="nb-form">
+    <form action="" method="post" enctype="multipart/form-data" class="sw-form">
         {% csrf_token %}
-        <div class="nb-form__grid">
-            <section class="nb-panel nb-panel--white">
-                <h2 class="nb-h3">The car</h2>
-                {{ listing_form|crispy }}
-            </section>
-            <section class="nb-panel nb-panel--pink">
-                <h2 class="nb-h3">Where it is</h2>
-                {{ location_form|crispy }}
-            </section>
-        </div>
-        <div class="nb-form__submit">
-            <button class="nb-btn nb-btn--blue nb-btn--lg" type="submit">Save</button>
-            <a href="{% url 'home' %}" class="nb-btn nb-btn--white nb-btn--lg">Cancel</a>
-        </div>
+        <section class="sw-section">
+            <div class="sw-wrap sw-grid sw-section__grid">
+                <div class="sw-section__label">
+                    <p class="sw-num">01</p>
+                    <p class="sw-label">The car</p>
+                </div>
+                <div class="sw-fields">
+                    {{ listing_form|crispy }}
+                </div>
+            </div>
+        </section>
+        <section class="sw-section">
+            <div class="sw-wrap sw-grid sw-section__grid">
+                <div class="sw-section__label">
+                    <p class="sw-num">02</p>
+                    <p class="sw-label">Where it is</p>
+                </div>
+                <div class="sw-fields">
+                    {{ location_form|crispy }}
+                </div>
+            </div>
+        </section>
+        <section class="sw-section sw-submitrow">
+            <div class="sw-wrap sw-grid sw-section__grid">
+                <div class="sw-fields-actions">
+                    <button class="sw-btn sw-btn--red" type="submit">Save &rarr;</button>
+                    <a href="{% url 'home' %}" class="sw-btn sw-btn--ghost">Cancel</a>
+                </div>
+            </div>
+        </section>
     </form>
 </div>
 {% endblock %}

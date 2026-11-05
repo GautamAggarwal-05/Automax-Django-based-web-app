@@ -3,22 +3,25 @@
 {% load crispy_forms_tags %}
 
 {% block body %}
-<div class="nb-wrap nb-auth">
-    <section class="nb-auth__intro nb-auth__intro--pink">
-        <img class="nb-auth__logo" src="{% static 'images/logo.png' %}" alt="" width="96" height="96">
-        <h1 class="nb-h1">Join AutoMax</h1>
-        <p>Register to list your own car, like listings and keep your profile in one place.</p>
-    </section>
+<div class="sw-auth">
+    <div class="sw-wrap sw-grid sw-auth__grid">
+        <section class="sw-auth__intro">
+            <p class="sw-label"><span class="sw-dot"></span> 01 / Account</p>
+            <h1 class="sw-auth__title">Join<br>AutoMax<span class="sw-red">.</span></h1>
+            <p class="sw-auth__lead">Register to list your own car, like listings and keep your profile in one place.</p>
+            <div class="sw-auth__circle" aria-hidden="true"></div>
+        </section>
 
-    <section class="nb-panel nb-panel--white nb-auth__panel">
-        <form action="" method="post" class="nb-form">
-            {% csrf_token %}
-            {{ register_form|crispy }}
-            <button class="nb-btn nb-btn--blue nb-btn--lg nb-btn--block" type="submit">Register</button>
-            <p class="nb-auth__switch">Already have an account? <a href="{% url 'login' %}">Sign in</a></p>
-            <p class="nb-auth__copy">Copyright © {% now "Y" %} AutoMax</p>
-        </form>
-    </section>
+        <section class="sw-auth__panel">
+            <form action="" method="post" class="sw-form">
+                {% csrf_token %}
+                {{ register_form|crispy }}
+                <button class="sw-btn sw-btn--red sw-btn--block" type="submit">Register &rarr;</button>
+                <p class="sw-auth__switch">Already have an account? <a href="{% url 'login' %}">Sign in</a></p>
+                <p class="sw-auth__copy">Copyright © {% now "Y" %} AutoMax</p>
+            </form>
+        </section>
+    </div>
 </div>
 {% endblock %}
 
